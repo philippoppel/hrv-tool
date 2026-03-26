@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HRV Messung</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+</head>
+<body>
+
+  <!-- Landing -->
+  <div id="view-landing" class="view active">
+    <div class="logo">&#9829;</div>
+    <h1 class="title">HRV Messung</h1>
+    <p class="subtitle">Verbinde deinen Garmin HRM Pro Plus und miss deine Herzratenvariabilität in 5 Minuten.</p>
+    <div id="browser-warning" class="browser-warning" style="display:none">
+      Web Bluetooth wird von diesem Browser nicht unterstützt.<br>Bitte verwende Chrome, Edge oder Opera.
+    </div>
+    <button id="btn-start" class="btn btn-primary">Messung starten</button>
+    <a id="btn-history-landing" class="history-link" style="display:none">Verlauf anzeigen</a>
+  </div>
+
+  <!-- Connecting -->
+  <div id="view-connecting" class="view">
+    <div class="spinner"></div>
+    <p class="connecting-text">Verbinde mit Herzfrequenzmesser...</p>
+    <div id="connect-error" class="error-banner"></div>
+  </div>
+
+  <!-- Live HR -->
+  <div id="view-livehr" class="view">
+    <div class="hr-display">
+      <div id="hr-value" class="hr-value">--</div>
+      <div class="hr-unit">BPM</div>
+    </div>
+    <div class="hr-chart-container">
+      <canvas id="chart-livehr"></canvas>
+    </div>
+    <div class="breathing-hint">
+      <strong>Sitz bequem und atme ganz natürlich.</strong><br>
+      Kontrolliere deine Atmung nicht — das verfälscht die Messung.<br>
+      Tipp: Brustgurt-Elektroden vorher leicht anfeuchten.
+      <div id="stability-status" style="margin-top: 12px; font-weight: 600; font-size: 14px;">Warte auf stabile Daten...</div>
+    </div>
+    <div class="start-btn-container">
+      <button id="btn-go" class="btn btn-go">Los</button>
+    </div>
+  </div>
+
+  <!-- Measuring -->
+  <div id="view-measuring" class="view">
+    <div id="timer" class="timer">5:00</div>
+    <div class="beat-counter">Schläge: <span id="beat-count">0</span></div>
+    <div class="measuring-chart">
+      <canvas id="chart-poincare-live"></canvas>
+    </div>
+    <p class="measuring-status">Atme ruhig weiter. Die Messung läuft...</p>
+    <button id="btn-cancel" class="btn btn-secondary btn-small">Abbrechen</button>
+  </div>
+
+  <!-- Results -->
+  <div id="view-results" class="view">
+    <div class="results-header">
+      <h2>Ergebnis</h2>
+      <div id="results-date" class="results-date"></div>
+    </div>
+
+    <div id="snapshot" class="snapshot"></div>
+
+    <p class="section-title">Zeitdomäne</p>
+    <div id="metrics-time" class="metrics-grid"></div>
+
+    <p class="section-title">Frequenzdomäne</p>
+    <div id="metrics-freq" class="metrics-grid"></div>
+
+    <p class="section-title">Non-Linear</p>
+    <div id="metrics-nonlinear" class="metrics-grid"></div>
+
+    <div class="chart-card">
+      <h3>Poincaré-Plot (RR[n] vs RR[n+1])</h3>
+      <canvas id="chart-poincare"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <h3>Frequenzspektrum (PSD)</h3>
+      <canvas id="chart-psd"></canvas>
+    </div>
+
+    <div id="interpretation" class="interpretation-container"></div>
+
+    <div class="results-actions">
+      <button id="btn-new-measurement" class="btn btn-primary btn-small">Neue Messung</button>
+      <button id="btn-to-history" class="btn btn-secondary btn-small">Verlauf</button>
+    </div>
+  </div>
+
+  <!-- History -->
+  <div id="view-history" class="view">
+    <div class="history-header">
+      <h2>Verlauf</h2>
+      <button id="btn-back-landing" class="btn btn-secondary btn-small">Zurück</button>
+    </div>
+
+    <div class="trend-charts" id="trend-charts"></div>
+    <div id="measurement-list" class="measurement-list"></div>
+
+    <div class="results-actions" style="margin-top: 16px">
+      <button id="btn-export" class="btn btn-secondary btn-small">Daten exportieren</button>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
